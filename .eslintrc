@@ -1,5 +1,10 @@
 {
   "root": true,
-  "extends": "eslint-config-egg/typescript"
+  "extends": "eslint-config-egg/typescript",
+  "rules": {
+    "quotes": "off",
+    "@typescript-eslint/indent": ["error", "tab"],
+    "array-bracket-spacing": "off",
+    "comma-dangle": "off"
+  }
 }
-

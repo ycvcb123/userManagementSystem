@@ -1,10 +1,9 @@
-import { Application } from 'egg';
+import { Application } from "egg";
 
 export default (app: Application) => {
-  const { controller, router } = app;
+	const { controller, router } = app;
 
-  router.redirect('/', '/news');
-  router.get('/news', controller.news.list);
-  router.get('/news/item/:id', controller.news.detail);
-  router.get('/news/user/:id', controller.news.user);
+	router.redirect("/", "/examples");
+	router.get("/examples", controller.example.index);
+	router.get("/examples/getDogs", controller.example.getDogs);
 };

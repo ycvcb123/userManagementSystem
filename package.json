@@ -7,16 +7,17 @@
     "typescript": true
   },
   "scripts": {
-    "start": "egg-scripts start",
-    "dev": "egg-bin dev",
+    "start": "egg-scripts start --daemon --title=demo-egg",
+    "stop": "egg-scripts stop --title=demo-egg",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
     "test": "npm run lint -- --fix && npm run test-local",
     "cov": "egg-bin cov",
-    "tsc": "tsc -p tsconfig.json",
+    "tsc": "ets && tsc -p tsconfig.json",
     "ci": "npm run lint && npm run cov && npm run tsc",
     "lint": "eslint .",
-    "clean": "tsc -b --clean"
+    "clean": "tsc -b --clean",
+    "ets": "ets"
   },
   "dependencies": {
     "egg": "^3.11.0",
