@@ -4,6 +4,7 @@
   "rules": {
     "quotes": "off",
     "@typescript-eslint/indent": ["error", "tab"],
+    "@typescript-eslint/no-var-requires": "off",
     "array-bracket-spacing": "off",
     "comma-dangle": "off"
   }

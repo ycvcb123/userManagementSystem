@@ -38,6 +38,18 @@ export default (appInfo: EggAppInfo) => {
 		"/favicon.ico": fs.readFileSync(path.join(appInfo.baseDir, "app/public/favicon.png")),
 	};
 
+	config.mongoose = {
+		url: "mongodb://127.0.0.1:27017/userManagement",
+	};
+
+	config.security = {
+		csrf: false,
+	};
+
+	config.bcrypt = {
+		saltRounds: 10, // 加盐的轮次
+	};
+
 	// 所有业务的配置都在这
 	const bizConfig = {};
 

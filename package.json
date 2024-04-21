@@ -9,6 +9,7 @@
   "scripts": {
     "start": "egg-scripts start --daemon --title=demo-egg",
     "stop": "egg-scripts stop --title=demo-egg",
+    "dev": "egg-bin dev --port 7001",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
     "test": "npm run lint -- --fix && npm run test-local",
@@ -21,9 +22,13 @@
   },
   "dependencies": {
     "egg": "^3.11.0",
+    "egg-bcrypt": "^1.1.0",
+    "egg-mongoose": "^3.3.1",
     "egg-scripts": "^2.17.0",
+    "egg-validate": "^2.0.2",
     "egg-view-nunjucks": "^2.3.0",
-    "moment": "^2.22.0"
+    "moment": "^2.22.0",
+    "mongoose-sequence": "^5.3.1"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "^1.1.0",
