@@ -19,10 +19,18 @@ declare module "egg" {
 		bcrypt: {
 			saltRounds: number;
 		};
+		session: {
+			bcrypt: boolean;
+		};
 	}
 
 	interface Application {
 		mongoose: Connection;
 		model: MongooseModels;
+		// 使用外部存储的定义
+		sessionMap: {
+			[key: string]: any;
+		};
+		sessionStore: any;
 	}
 }

@@ -24,7 +24,12 @@ export default (appInfo: EggAppInfo) => {
 		serverUrl: "https://hacker-news.firebaseio.com/v0",
 	};
 
+	config.session = {
+		bcrypt: false,
+	};
+
 	// override config from framework / plugin
+	// use for cookie sign key, should change to you own and keep security
 	config.keys = appInfo.name + "123456";
 
 	config.view = {

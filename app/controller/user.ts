@@ -26,6 +26,10 @@ export const userErrorMessages = {
 		errno: 101003,
 		message: "用户不存在或者密码校验错误",
 	},
+	loginValidateFail: {
+		errno: 101004,
+		message: "登录校验失败",
+	},
 };
 
 export default class UserController extends Controller {
@@ -79,12 +83,21 @@ export default class UserController extends Controller {
 			return ctx.helper.error({ ctx, errorType: "loginCheckFailInfo" });
 		}
 
+		// 处理返回字段的过滤要在schema中配置
 		// delete user.password; Docment 不是一个普通的对象不能直接删除
-
 		// const userObj = user.toJSON();
 		// delete userObj.password;
 
-		ctx.helper.success({ ctx, res: user, msg: "登录成功" });
+		ctx.helper.success({ ctx, res: user.toJSON(), msg: "登录成功" }); // 这里的toJSON加不加无所谓了
+
+		/**
+		 * 1. cookie的验证
+		 */
+		// ctx.cookies.set("username", user.username, { encrypt: true });
+		/**
+		 * 2. session的验证
+		 */
+		// ctx.session.username = user.username;
 	}
 
 	async findById() {
@@ -92,6 +105,21 @@ export default class UserController extends Controller {
 		// /user/:id
 		const userData = await service.user.findById(ctx.params.id);
 		ctx.helper.success({ ctx, res: userData });
+		/**
+		 * 1. cookie 的验证
+		 * */
+		// const { ctx } = this;
+		// const userData = ctx.cookies.get("username"); // { encrypt: true }
+		// ctx.helper.success({ ctx, res: userData });
+		/**
+		 * 2. session的验证
+		 */
+		// const { ctx } = this;
+		// const userData = ctx.session.username; // { encrypt: true }
+		// if (!userData) {
+		// 	return ctx.helper.error({ ctx, errorType: "loginValidateFail" });
+		// }
+		// ctx.helper.success({ ctx, res: userData });
 	}
 
 	async findByUsername(username: string) {

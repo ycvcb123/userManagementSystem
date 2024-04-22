@@ -7,6 +7,23 @@ export default class AppBoot implements IBoot {
 	private readonly app: Application;
 	constructor(app: Application) {
 		this.app = app;
+		// 外部存储
+		app.sessionMap = {};
+		// 这个是官方文档使用外部存储的约定 https://www.eggjs.org/zh-CN/core/cookie-and-session#%E6%89%A9%E5%B1%95%E5%AD%98%E5%82%A8
+		app.sessionStore = {
+			async get(key) {
+				app.logger.info("key", key);
+				return app.sessionMap[key];
+			},
+			async set(key, value) {
+				app.logger.info("key", key);
+				app.logger.info("value", value);
+				app.sessionMap[key] = value;
+			},
+			async destroy(key) {
+				delete app.sessionMap[key];
+			},
+		};
 	}
 
 	/**
