@@ -10,6 +10,7 @@ logs/
 *.swp
 *.lock
 *.js
+.env
 
 app/**/*.js
 test/**/*.js

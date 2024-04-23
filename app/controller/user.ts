@@ -48,6 +48,11 @@ export const userErrorMessages = {
 		errno: 101007,
 		message: "验证码错误",
 	},
+	// 验证码发送失败
+	sendVeriCodeError: {
+		errno: 101009,
+		message: "验证码发送失败",
+	},
 };
 
 export default class UserController extends Controller {
@@ -221,7 +226,7 @@ export default class UserController extends Controller {
 
 		// 从redis中取数据 phoneVeriCode-13456453234
 		const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
-		console.log("preVeriCode:::", preVeriCode);
+
 		if (preVeriCode) {
 			return ctx.helper.error({ ctx, errorType: "phoneValidateFrequentlyFail", error: errors });
 		}
@@ -232,7 +237,21 @@ export default class UserController extends Controller {
 		 * */
 		const veriCode = Math.floor(Math.random() * 9000 + 1000).toString();
 		await app.redis.set(`phoneVeriCode-${phoneNumber}`, veriCode, "ex", 60); // ex:60 设置过期时间是60s
-		ctx.helper.success({ ctx, res: { veriCode } });
+
+		if (app.config.env === "prod") {
+			// 向用户发送短信
+			try {
+				const res = await ctx.service.user.sendSMS({ phoneNumber, veriCode });
+				if (res.body.code !== "OK") {
+					return ctx.helper.error({ ctx, errorType: "sendVeriCodeError" });
+				}
+			} catch (err) {
+				return ctx.helper.error({ ctx, errorType: "sendVeriCodeError", error: err });
+			}
+		}
+
+		// 生产环境验证码通过短信发送就不返回了
+		ctx.helper.success({ ctx, res: app.config.env === "prod" ? "" : { veriCode }, msg: "验证码发送成功" });
 	}
 
 	// 通过手机号验证码登录

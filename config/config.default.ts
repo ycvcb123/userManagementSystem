@@ -1,6 +1,8 @@
 import { EggAppConfig, PowerPartial, EggAppInfo } from "egg";
 import * as fs from "fs";
 import * as path from "path";
+import * as dotenv from "dotenv";
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 // for config.{env}.ts
 export type DefaultConfig = PowerPartial<EggAppConfig & BizConfig>;
@@ -75,6 +77,12 @@ export default (appInfo: EggAppInfo) => {
 		jwt: {
 			secret: "5674373",
 			expires: "2h",
+		},
+		// 阿里云短信服务接入配置
+		aliCloudConfig: {
+			accessKeyId: process.env.accessKeyId,
+			accessKeySecret: process.env.accessKeySecret,
+			endpoint: `dysmsapi.aliyuncs.com`,
 		},
 	};
 

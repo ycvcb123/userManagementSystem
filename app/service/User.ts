@@ -1,6 +1,7 @@
 import { Service } from "egg";
 import { UserProps } from "../model/user";
 import { sign } from "jsonwebtoken";
+import * as $Dysmsapi from "@alicloud/dysmsapi20170525";
 
 export default class UserService extends Service {
 	public async createByEmail(payload: UserProps) {
@@ -55,5 +56,17 @@ export default class UserService extends Service {
 		});
 
 		return token;
+	}
+
+	async sendSMS({ phoneNumber = "", veriCode = "" }) {
+		const { app } = this;
+		const sendSMSRequest = new $Dysmsapi.SendSmsRequest({
+			signName: "阿里云短信测试",
+			templateCode: "SMS_154950909",
+			phoneNumbers: phoneNumber,
+			templateParam: `{\"code\":\"${veriCode}\"}`,
+		});
+
+		return await app.ALClient.sendSms(sendSMSRequest);
 	}
 }
