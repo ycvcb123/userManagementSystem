@@ -55,8 +55,28 @@ export default (appInfo: EggAppInfo) => {
 		saltRounds: 10, // 加盐的轮次
 	};
 
+	config.redis = {
+		client: {
+			port: 6379,
+			host: "127.0.0.1",
+			password: "",
+			db: 0, // 只有一个实例
+		},
+	};
+
+	// config.jwt = {
+	// 	secret: "5674373",
+	// 	expires: "2h",
+	// };
+
 	// 所有业务的配置都在这
-	const bizConfig = {};
+	const bizConfig = {
+		// 使用我们自己写的jwt中间件写到这里，使用egg-jwt 就写到外面，原理是一样的，egg-jwt更完善一点
+		jwt: {
+			secret: "5674373",
+			expires: "2h",
+		},
+	};
 
 	return {
 		...config,

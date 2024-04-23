@@ -22,6 +22,11 @@ declare module "egg" {
 		session: {
 			bcrypt: boolean;
 		};
+		jwt: {
+			secret: string; // 加密密钥
+			match: string[]; // 这里匹配需要走json web token的路径
+			expires: string | number | undefined; // 设置token过期时间
+		};
 	}
 
 	interface Application {

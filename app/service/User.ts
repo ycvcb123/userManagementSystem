@@ -1,5 +1,6 @@
 import { Service } from "egg";
 import { UserProps } from "../model/user";
+import { sign } from "jsonwebtoken";
 
 export default class UserService extends Service {
 	public async createByEmail(payload: UserProps) {
@@ -23,5 +24,36 @@ export default class UserService extends Service {
 	async findByUsername(username: string) {
 		const { ctx } = this;
 		return ctx.model.User.findOne({ username });
+	}
+
+	// 通过手机号登录获取json web token
+	async loginByCellphone(phonenumber: string) {
+		const { ctx, app } = this;
+		const user = await this.findByUsername(phonenumber);
+		// 检查用户是否存在
+		if (user) {
+			// 生成json web token
+			const token = sign({ username: user.username }, app.config.jwt.secret, {
+				expiresIn: app.config.jwt.expires,
+			});
+			return token;
+		}
+
+		// 新建用户
+		const userCreatedData: Partial<UserProps> = {
+			username: phonenumber,
+			phoneNumber: phonenumber,
+			nickName: `用户${phonenumber.slice(-4)}`,
+			type: "cellphone",
+		};
+
+		const newUser = await ctx.model.User.create(userCreatedData);
+
+		// 生成json web token
+		const token = sign({ username: newUser.username }, app.config.jwt.secret, {
+			expiresIn: app.config.jwt.expires,
+		});
+
+		return token;
 	}
 }
