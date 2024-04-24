@@ -48,6 +48,11 @@ export const userErrorMessages = {
 		errno: 101007,
 		message: "验证码错误",
 	},
+	// gitee授权错误
+	giteeAuothFail: {
+		errno: 101008,
+		message: "gitee授权登录失败",
+	},
 	// 验证码发送失败
 	sendVeriCodeError: {
 		errno: 101009,
@@ -275,5 +280,31 @@ export default class UserController extends Controller {
 		const token = await ctx.service.user.loginByCellphone(phoneNumber);
 
 		return ctx.helper.success({ ctx, res: token });
+	}
+
+	// Oauth2
+	async oauth() {
+		const { app, ctx } = this;
+		const { clientID, redirectURL } = app.config.giteeOauthConfig;
+		ctx.redirect(
+			`https://gitee.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURL}&response_type=code`
+		);
+	}
+
+	// oauth by gitee
+	async oauthByGitee() {
+		const { ctx } = this;
+		const { code } = ctx.request.query;
+		try {
+			// const resp = await ctx.service.user.getAccessToken(code);
+			const token = await ctx.service.user.loginByGitee(code);
+			if (token) {
+				ctx.helper.success({ ctx, res: { token } });
+			} else {
+				return ctx.helper.error({ ctx, errorType: "giteeAuothFail" });
+			}
+		} catch (err) {
+			return ctx.helper.error({ ctx, errorType: "giteeAuothFail", error: err });
+		}
 	}
 }

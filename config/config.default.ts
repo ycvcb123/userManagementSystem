@@ -30,6 +30,14 @@ export default (appInfo: EggAppInfo) => {
 		bcrypt: false,
 	};
 
+	const giteeOauthConfig = {
+		clientID: process.env.clientID,
+		clientSecret: process.env.clientSecret,
+		redirectURL: "http://127.0.0.1:7001/api/users/gitee/oauth/callback",
+		authURL: "https://gitee.com/oauth/token?grant_type=authorization_code",
+		giteeUserApi: "https://gitee.com/api/v5/user",
+	};
+
 	// override config from framework / plugin
 	// use for cookie sign key, should change to you own and keep security
 	config.keys = appInfo.name + "123456";
@@ -84,6 +92,7 @@ export default (appInfo: EggAppInfo) => {
 			accessKeySecret: process.env.accessKeySecret,
 			endpoint: `dysmsapi.aliyuncs.com`,
 		},
+		giteeOauthConfig,
 	};
 
 	return {

@@ -27,6 +27,13 @@ declare module "egg" {
 			match: string[]; // 这里匹配需要走json web token的路径
 			expires: string | number | undefined; // 设置token过期时间
 		};
+		giteeOauthConfig: {
+			clientID: string;
+			clientSecret: string;
+			redirectURL: string;
+			authURL: string;
+			giteeUserApi: string;
+		};
 	}
 
 	interface Application {

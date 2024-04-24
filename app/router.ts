@@ -19,4 +19,8 @@ export default (app: Application) => {
 	router.post("/api/users/login", controller.user.loginByEmail);
 	router.post("/api/users/genVeriCode", controller.user.sendVeriCode);
 	router.post("/api/users/loginByCellphone", controller.user.loginByCellphone);
+
+	router.get("/api/users/passport/gitee", controller.user.oauth);
+
+	router.get("/api/users/gitee/oauth/callback", controller.user.oauthByGitee);
 };

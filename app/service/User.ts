@@ -3,6 +3,14 @@ import { UserProps } from "../model/user";
 import { sign } from "jsonwebtoken";
 import * as $Dysmsapi from "@alicloud/dysmsapi20170525";
 
+interface GiteeUserResp {
+	id: number;
+	login: string;
+	name: string;
+	avatar_url: string;
+	email: string;
+}
+
 export default class UserService extends Service {
 	public async createByEmail(payload: UserProps) {
 		const { ctx } = this;
@@ -68,5 +76,75 @@ export default class UserService extends Service {
 		});
 
 		return await app.ALClient.sendSms(sendSMSRequest);
+	}
+
+	async getAccessToken(code: string) {
+		const { ctx, app } = this;
+		const { clientID, clientSecret, redirectURL, authURL } = app.config.giteeOauthConfig;
+		console.log("giteeOauthConfig::", app.config.giteeOauthConfig);
+		// 原始的获取token的请求 "https://gitee.com/oauth/token?grant_type=authorization_code&code={code}&client_id={client_id}&redirect_uri={redirect_uri}&client_secret={client_secret}"
+		const { data } = await ctx.curl(authURL, {
+			method: "POST",
+			contentType: "json",
+			dataType: "json",
+			data: {
+				code,
+				client_id: clientID,
+				client_secret: clientSecret,
+				redirect_uri: redirectURL,
+			},
+		});
+
+		app.logger.info("getAccessToken data: ", data);
+
+		return data.access_token;
+	}
+
+	// get user data
+	async getGiteeUserData(access_token: string) {
+		const { ctx, app } = this;
+		const { giteeUserApi } = app.config.giteeOauthConfig;
+		const { data } = await ctx.curl<GiteeUserResp>(`${giteeUserApi}?access_token=${access_token}`, {
+			dataType: "json",
+		});
+		return data;
+	}
+
+	async loginByGitee(code: string) {
+		const { ctx, app } = this;
+		const access_token = await this.getAccessToken(code);
+		const user = await ctx.service.user.getGiteeUserData(access_token);
+		// 查询用户信息是否存在
+		const { id, avatar_url, name, email } = user;
+		const idStr = id.toString();
+		// 不同的平台id可能会相同，加个前缀 gitee + id
+		const existUser = await this.findByUsername(`Gitee${idStr}`);
+
+		if (existUser) {
+			const token = sign({ username: existUser.username }, app.config.jwt.secret, {
+				expiresIn: app.config.jwt.expires,
+			});
+			return token;
+		}
+
+		// 新建用户
+		const userCreatedData: Partial<UserProps> = {
+			oauthID: idStr,
+			oauthProvider: "gitee",
+			username: `Gitee${idStr}`,
+			picture: avatar_url,
+			nickName: name,
+			email,
+			type: "oauth",
+		};
+
+		const newUser = await ctx.model.User.create(userCreatedData);
+
+		// 生成json web token
+		const token = sign({ username: newUser.username }, app.config.jwt.secret, {
+			expiresIn: app.config.jwt.expires,
+		});
+
+		return token;
 	}
 }
