@@ -1,5 +1,6 @@
 import { Context } from "egg";
-import { userErrorMessages } from "../controller/user";
+// import { userErrorMessages } from "../controller/user";
+import { globalErrorMessage } from "../../error/index";
 
 interface RespType {
 	ctx: Context;
@@ -15,7 +16,7 @@ interface RespType {
 
 interface ErrorRespType {
 	ctx: Context;
-	errorType: keyof typeof userErrorMessages;
+	errorType: keyof typeof globalErrorMessage;
 	error?: any;
 }
 
@@ -29,7 +30,7 @@ export default {
 		ctx.status = 200;
 	},
 	error({ ctx, errorType, error }: ErrorRespType) {
-		const { message, errno } = userErrorMessages[errorType];
+		const { message, errno } = globalErrorMessage[errorType];
 		ctx.body = {
 			errno,
 			message: message ? message : "请求失败",

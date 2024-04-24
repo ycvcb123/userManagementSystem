@@ -1,6 +1,8 @@
 import { Controller } from "egg";
 // verify
 import { sign } from "jsonwebtoken";
+import inputValidate from "../../decorator/inputValidate";
+import checkPermission from "../../decorator/checkPermission";
 
 // 验证规则
 const userCreateRules = {
@@ -61,15 +63,27 @@ export const userErrorMessages = {
 };
 
 export default class UserController extends Controller {
+	@inputValidate(userCreateRules, "userValidateFail")
 	async createByEmail() {
 		const { ctx, service } = this;
 
-		// ctx.validate(userCreateRules); // 1. 会直接获取request.body的结果
-		const errors = ctx.app.validator.validate(userCreateRules, ctx.request.body); // 2. 一般用这种验证
-		if (errors) {
-			ctx.logger.warn("createByEmail validate errors:", errors);
-			return ctx.helper.error({ ctx, errorType: "userValidateFail", error: errors }); // 不加return还会继续执行
-		}
+		/**
+		 * 1. 会直接获取request.body的结果
+		 * */
+		// ctx.validate(userCreateRules);
+
+		/**
+		 * 2. 一般用这种验证
+		 * */
+		// const errors = ctx.app.validator.validate(userCreateRules, ctx.request.body);
+		// if (errors) {
+		// 	ctx.logger.warn("createByEmail validate errors:", errors);
+		// 	return ctx.helper.error({ ctx, errorType: "userValidateFail", error: errors }); // 不加return还会继续执行
+		// }
+
+		/**
+		 * 3. 改用装饰器 @inputValidate(userCreateRules, "userValidateFail")
+		 * */
 
 		const { username } = ctx.request.body;
 		const user = await service.user.findByUsername(username);
@@ -91,12 +105,17 @@ export default class UserController extends Controller {
 		}
 	}
 
+	@inputValidate(userCreateRules, "userValidateFail")
 	async loginByEmail() {
 		const { ctx, service } = this;
-		const errors = this.validateUserInput(userCreateRules);
-		if (errors) {
-			return ctx.helper.error({ ctx, errorType: "userValidateFail", error: errors }); // 不加return还会继续执行
-		}
+
+		/**
+		 * 统一切换成 装饰器的方式了，不用下面这种写法
+		 * */
+		// const errors = this.validateUserInput(userCreateRules);
+		// if (errors) {
+		// 	return ctx.helper.error({ ctx, errorType: "userValidateFail", error: errors });
+		// }
 		// 根据username取得用户信息
 		const { username, password } = ctx.request.body;
 		const user = await service.user.findByUsername(username);
@@ -135,13 +154,14 @@ export default class UserController extends Controller {
 		 * public claims 公共信息： should be unique like email, address or phone_number
 		 */
 		const { app } = this;
-		const token = sign({ username: user.username }, app.config.jwt.secret, {
+		const token = sign({ username: user.username, _id: user._id }, app.config.jwt.secret, {
 			expiresIn: app.config.jwt.expires,
 		});
 
 		ctx.helper.success({ ctx, res: { token }, msg: "登录成功" });
 	}
 
+	@checkPermission("User", "workNoPermissonFail", "_id")
 	async findById() {
 		/**
 		 * 0. 正常根据user的id进行查找
@@ -228,19 +248,24 @@ export default class UserController extends Controller {
 	}
 
 	// 通过手机号发送验证码
+	@inputValidate(sendCodeRules, "phoneValidateFail")
 	async sendVeriCode() {
 		const { ctx, app } = this;
 		const { phoneNumber } = ctx.request.body;
-		const errors = this.validateUserInput(sendCodeRules);
-		if (errors) {
-			return ctx.helper.error({ ctx, errorType: "phoneValidateFail", error: errors });
-		}
+
+		/**
+		 * 统一切换成装饰器校验了
+		 */
+		// const errors = this.validateUserInput(sendCodeRules);
+		// if (errors) {
+		// 	return ctx.helper.error({ ctx, errorType: "phoneValidateFail", error: errors });
+		// }
 
 		// 从redis中取数据 phoneVeriCode-13456453234
 		const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
 
 		if (preVeriCode) {
-			return ctx.helper.error({ ctx, errorType: "phoneValidateFrequentlyFail", error: errors });
+			return ctx.helper.error({ ctx, errorType: "phoneValidateFrequentlyFail" });
 		}
 
 		/**
@@ -267,14 +292,15 @@ export default class UserController extends Controller {
 	}
 
 	// 通过手机号验证码登录
+	@inputValidate(sendCodeRules, "phoneValidateFail")
 	async loginByCellphone() {
 		const { ctx, app } = this;
 		const { phoneNumber, veriCode } = ctx.request.body;
-		// 先校验下手机号是否合法
-		const error = this.validateUserInput(sendCodeRules);
-		if (error) {
-			return ctx.helper.error({ ctx, errorType: "phoneValidateFail", error });
-		}
+		// // 先校验下手机号是否合法
+		// const error = this.validateUserInput(sendCodeRules);
+		// if (error) {
+		// 	return ctx.helper.error({ ctx, errorType: "phoneValidateFail", error });
+		// }
 
 		// 然后根据手机号从redis中拿到对应的验证码，和当前传入的验证码做比较
 		const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);

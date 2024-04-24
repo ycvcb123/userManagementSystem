@@ -42,7 +42,7 @@ export default class UserService extends Service {
 		// 检查用户是否存在
 		if (user) {
 			// 生成json web token
-			const token = sign({ username: user.username }, app.config.jwt.secret, {
+			const token = sign({ username: user.username, _id: user._id }, app.config.jwt.secret, {
 				expiresIn: app.config.jwt.expires,
 			});
 			return token;
@@ -59,7 +59,7 @@ export default class UserService extends Service {
 		const newUser = await ctx.model.User.create(userCreatedData);
 
 		// 生成json web token
-		const token = sign({ username: newUser.username }, app.config.jwt.secret, {
+		const token = sign({ username: newUser.username, _id: newUser._id }, app.config.jwt.secret, {
 			expiresIn: app.config.jwt.expires,
 		});
 
@@ -121,7 +121,7 @@ export default class UserService extends Service {
 		const existUser = await this.findByUsername(`Gitee${idStr}`);
 
 		if (existUser) {
-			const token = sign({ username: existUser.username }, app.config.jwt.secret, {
+			const token = sign({ username: existUser.username, _id: existUser._id }, app.config.jwt.secret, {
 				expiresIn: app.config.jwt.expires,
 			});
 			return token;
@@ -141,7 +141,7 @@ export default class UserService extends Service {
 		const newUser = await ctx.model.User.create(userCreatedData);
 
 		// 生成json web token
-		const token = sign({ username: newUser.username }, app.config.jwt.secret, {
+		const token = sign({ username: newUser.username, _id: newUser._id }, app.config.jwt.secret, {
 			expiresIn: app.config.jwt.expires,
 		});
 

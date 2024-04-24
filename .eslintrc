@@ -7,6 +7,7 @@
     "@typescript-eslint/no-var-requires": "off",
     "array-bracket-spacing": "off",
     "comma-dangle": "off",
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "space-before-function-paren": "off"
   }
 }

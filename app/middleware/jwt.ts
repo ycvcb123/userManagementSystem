@@ -44,7 +44,7 @@ export default (options: EggAppConfig["jwt"]) => {
 
 		try {
 			const decoded = verify(token, secret);
-			ctx.logger.info("decoded:", decoded);
+			// ctx.logger.info("decoded:", decoded);
 			ctx.state.user = decoded; // ctx 有个state 在中间件传递信息，把信息传递给模版 koa2 推荐的命名空间
 			await next();
 		} catch (e) {
