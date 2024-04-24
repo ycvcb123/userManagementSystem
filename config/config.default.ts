@@ -61,6 +61,11 @@ export default (appInfo: EggAppInfo) => {
 		csrf: false,
 	};
 
+	config.cors = {
+		allowMethods: "GET,HEAD,PUT,POST,DELETE,PATCH",
+		origin: "http://127.0.0.1:8080",
+	};
+
 	config.bcrypt = {
 		saltRounds: 10, // 加盐的轮次
 	};

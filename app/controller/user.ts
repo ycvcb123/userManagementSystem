@@ -191,6 +191,13 @@ export default class UserController extends Controller {
 		ctx.helper.success({ ctx, res: userData });
 	}
 
+	async show() {
+		const { ctx } = this;
+		ctx.logger.info("ctx.state.user:", ctx.state.user);
+		const userData = await ctx.service.user.findByUsername(ctx.state.user.username);
+		ctx.helper.success({ ctx, res: userData });
+	}
+
 	// 已经迁移至middleware
 	// getTokenValue() {
 	// 	const { ctx } = this;
@@ -299,7 +306,10 @@ export default class UserController extends Controller {
 			// const resp = await ctx.service.user.getAccessToken(code);
 			const token = await ctx.service.user.loginByGitee(code);
 			if (token) {
-				ctx.helper.success({ ctx, res: { token } });
+				// 前后端一起的情况
+				// ctx.helper.success({ ctx, res: { token } });
+				// 前后端分离的情况（用postmessage做传递）
+				await ctx.render("oauth-success.tpl", { token });
 			} else {
 				return ctx.helper.error({ ctx, errorType: "giteeAuothFail" });
 			}

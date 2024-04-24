@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <button id="oauth">点击授权</button>
+    </div>
+
+    <div>
+        <button id="login">login</button>
+    </div>
+   
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.getElementById('oauth').addEventListener('click', () => {
+        window.open('http://127.0.0.1:7001/api/users/passport/gitee', '_blank', 'height=500, width=500, top=0, left=0') 
+    })
+
+    document.getElementById('login').addEventListener('click', () => {
+        axios.post('http://127.0.0.1:7001/api/users/loginByEmail', {
+            username: "winson@qq.com",
+            password: "12345678"
+        })
+            .then(function(response) {
+                console.log(response.data);
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    })
+
+    window.onload = function() {
+        window.addEventListener('message', m => {
+           const token = m.data.token;
+           console.log(token)
+            // 在这里使用 Axios 进行网络请求等操作
+            axios.get('http://127.0.0.1:7001/api/users/userInfo', {
+    
+                headers: {Authorizatiion: `Bearer ${token}`}
+            })
+                .then(function(response) {
+                    console.log(response.data);
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        })
+    }
+
+   
+</script>
+</html>
