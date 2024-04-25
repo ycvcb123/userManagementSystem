@@ -3,6 +3,7 @@
   "compilerOptions": {
     "declaration": false
   },
+  "experimentalDecorators": true,
   "exclude": [
     "app/public",
     "app/views"
