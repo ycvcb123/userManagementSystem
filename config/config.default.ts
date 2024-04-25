@@ -55,6 +55,9 @@ export default (appInfo: EggAppInfo) => {
 
 	config.mongoose = {
 		url: "mongodb://127.0.0.1:27017/userManagement",
+		options: {
+			useUnifiedTopology: true, // 添加 useUnifiedTopology 选项
+		},
 	};
 
 	config.security = {
