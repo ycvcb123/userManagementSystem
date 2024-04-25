@@ -59,12 +59,14 @@ export default (appInfo: EggAppInfo) => {
 
 	config.security = {
 		csrf: false,
+		domainWhiteList: ["http://127.0.0.1:8080"],
 	};
 
-	config.cors = {
-		allowMethods: "GET,HEAD,PUT,POST,DELETE,PATCH",
-		origin: "http://127.0.0.1:8080",
-	};
+	// 这里只能陪一个，多个实现比较麻烦，直接换到security一样的
+	// config.cors = {
+	// 	allowMethods: "GET,HEAD,PUT,POST,DELETE,PATCH",
+	// 	origin: "http://127.0.0.1:8080",
+	// };
 
 	config.bcrypt = {
 		saltRounds: 10, // 加盐的轮次
