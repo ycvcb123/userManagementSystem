@@ -57,6 +57,11 @@ export default (appInfo: EggAppInfo) => {
 		url: "mongodb://127.0.0.1:27017/userManagement",
 		options: {
 			useUnifiedTopology: true, // 添加 useUnifiedTopology 选项
+			// user: "root",
+			// pass: "123456",
+			// authSource: "admin",
+			// user: "winson",
+			// pass: "123456",
 		},
 	};
 

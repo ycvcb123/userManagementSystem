@@ -1,0 +1,39 @@
+version: '3'
+services: 
+  user-mongo:
+    image: mongo
+    container_name: user-mongo
+    volumes: 
+      - '.docker-volumes/mongo/data:/data/db'
+      - '$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/'
+    ports:
+      - '27017:27017'
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=admin
+    #   - MONGO_INITDB_ROOT_PASSWORD=pass
+    # 和environment作用是一样的
+    env_file:
+      - .env
+  user-redis:
+    image: redis:6
+    container_name: user-redis
+    env_file:
+      - .env
+    # 没有提供密码的配置选项，所以用下面这种方式
+    command: >
+      --requirepass ${REDIS_PASSWORD}
+    ports: 
+      - 6379:6379
+  user-system:
+    depends_on:
+      - user-mongo
+    env_file: 
+      - .env
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: user-system
+    container_name: user-system
+    ports:
+      - '7001:7001'
+    

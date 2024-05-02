@@ -8,6 +8,7 @@
     "array-bracket-spacing": "off",
     "comma-dangle": "off",
     "arrow-parens": "off",
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
   }
 }

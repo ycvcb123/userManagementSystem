@@ -30,6 +30,11 @@ export default class UserService extends Service {
 		return ctx.model.User.findById(id);
 	}
 
+	async findAll() {
+		const { ctx } = this;
+		return ctx.model.User.find();
+	}
+
 	async findByUsername(username: string) {
 		const { ctx } = this;
 		return ctx.model.User.findOne({ username });
