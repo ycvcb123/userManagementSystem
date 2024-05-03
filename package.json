@@ -18,7 +18,8 @@
     "ci": "npm run lint && npm run cov && npm run tsc",
     "lint": "eslint .",
     "clean": "tsc -b --clean",
-    "ets": "ets"
+    "ets": "ets",
+    "release": "release-it"
   },
   "dependencies": {
     "@alicloud/dysmsapi20170525": "^2.0.2",
@@ -48,6 +49,7 @@
     "egg-mock": "^5.5.0",
     "eslint": "^8.31.0",
     "eslint-config-egg": "^12.1.0",
+    "release-it": "^16.3.0",
     "typescript": "^4.9.4"
   },
   "engines": {
