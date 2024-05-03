@@ -20,7 +20,7 @@ jobs:
       # 1. git add .
       # 2. git commit -m 'xxxxx'
       # 3. git tag -a v0.0.3 -m 'version 0.0.3' 
-      # 4. git push --tags
+      # 4. git push --tags 这里和git push 是两回事
       # 5. git push
       - name: Find and replace
         uses: jacobtomlinson/gha-find-replace@v3
