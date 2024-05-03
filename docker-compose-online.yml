@@ -27,7 +27,7 @@ services:
   user-system:
     env_file: 
       - .env
-    image: registry.cn-shenzhen.aliyuncs.com/winsonye/usermanagement:0.0.2
+    image: registry.cn-shenzhen.aliyuncs.com/winsonye/usermanagement:{{tag}}
     container_name: user-system
     ports:
       - '7001:7001'
