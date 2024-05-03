@@ -36,3 +36,22 @@ jobs:
           key: ${{ secrets.KEY }}
           source: 'user-management'
           target: '~'
+      # 通过ssh登陆重启docker服务
+      - name: executing ssh and restart docker
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script_stop: true
+          # 登陆阿里云的acr   
+          # 停止docker服务
+          # 重新启动docker服务
+          # 清理工作
+          script: | 
+            docker login --username=${{secrets.ACR_USERNAME}} --password=${{secrets.ACR_PASSWORD}} registry.cn-shenzhen.aliyuncs.com
+            cd ~/user-management/
+            docker-compose -f docker-compose-online.yml down
+            docker-compose -f docker-compose-online.yml up -d
+            rm -rf .env 
+            docker logout registry.cn-shenzhen.aliyuncs.com
