@@ -15,11 +15,11 @@ jobs:
          echo ${{github.ref}}
          echo ${{github.ref_name}}
          echo ${{github.sha}}
-      # 查找替换 https://github.com/marketplace/actions/find-and-replace
+      # 查找替换{{tags}} https://github.com/marketplace/actions/find-and-replace
       # github 打tag的步骤
       # 1. git add .
       # 2. git commit -m 'xxxxx'
-      # 3. git tag -a v0.0.3 -m 'version 0.0.3'
+      # 3. git tag -a v0.0.3 -m 'version 0.0.3' 
       # 4. git push --tags
       # 5. git push
       - name: Find and replace
