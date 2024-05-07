@@ -42,7 +42,7 @@ export default (appInfo: EggAppInfo) => {
 	const bizConfig = {};
 
 	return {
-		...config,
+		...(config as {}),
 		...bizConfig,
 	};
 };
