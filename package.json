@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "egg-scripts start --daemon --title=demo-egg",
+    "dev": "egg-bin dev --port 7001",
     "stop": "egg-scripts stop --title=demo-egg",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
