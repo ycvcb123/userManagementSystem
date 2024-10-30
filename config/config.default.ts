@@ -65,6 +65,7 @@ export default (appInfo: EggAppInfo) => {
 		},
 	};
 
+	// debugger
 	config.security = {
 		csrf: false,
 		domainWhiteList: ["http://127.0.0.1:8080"],
