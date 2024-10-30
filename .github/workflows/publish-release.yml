@@ -36,6 +36,12 @@ jobs:
           username: "${{ secrets.ACR_USERNAME }}"
           password: "${{ secrets.ACR_PASSWORD }}"
       # 使用正确的github tag 对应 acr tag 进行 docker build
+      # github 打tag的步骤
+      # 1. git add .
+      # 2. git commit -m 'xxxxx'
+      # 3. git tag -a v0.0.3 -m 'version 0.0.3' 
+      # 4. git push --tags 这里和git push 是两回事
+      # 5. git push
       - name: Build image for ACR docker
         run: docker build --tag "registry.cn-shenzhen.aliyuncs.com/winsonye/usermanagement:${{github.ref_name}}" .
       # 推送镜像到 ACR

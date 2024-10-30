@@ -332,7 +332,7 @@ export default class UserController extends Controller {
 			// const resp = await ctx.service.user.getAccessToken(code);
 			const token = await ctx.service.user.loginByGitee(code);
 			if (token) {
-				// 前后端一起的情况
+				// 前后端一起的情况 ....
 				// ctx.helper.success({ ctx, res: { token } });
 				// 前后端分离的情况（用postmessage做传递）
 				await ctx.render("oauth-success.tpl", { token });
