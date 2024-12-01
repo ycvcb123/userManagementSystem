@@ -103,6 +103,7 @@ export default class UserController extends Controller {
 		/**
 		 * 1. cookie的验证
 		 */
+		// ctx.cookies.set("username", user.username);
 		// ctx.cookies.set("username", user.username, { encrypt: true });
 		/**
 		 * 2. session的验证
