@@ -27,6 +27,10 @@ export default class UserService extends Service {
 
 	async findById(id: string) {
 		const { ctx } = this;
+		// ctx.model.xxx ts支持 （imodel里自动生成了，继承就好）
+		// interface MongooseModels extends IModel {
+		// 	[key: string]: Model<any>;
+		// }
 		return ctx.model.User.findById(id);
 	}
 
@@ -69,8 +73,8 @@ export default class UserService extends Service {
 	async sendSMS({ phoneNumber = "", veriCode = "" }) {
 		const { app } = this;
 		const sendSMSRequest = new $Dysmsapi.SendSmsRequest({
-			signName: "阿里云短信测试",
-			templateCode: "SMS_154950909",
+			signName: "enginecli",
+			templateCode: "SMS_465715964",
 			phoneNumbers: phoneNumber,
 			templateParam: `{\"code\":\"${veriCode}\"}`,
 		});
