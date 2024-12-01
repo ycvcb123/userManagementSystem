@@ -23,6 +23,14 @@ function getTokenValue(ctx: Context) {
 
 export default (options: EggAppConfig["jwt"]) => {
 	return async (ctx: Context, next: () => Promise<any>) => {
+		// 从 header 获取对应的 token
+		const token = getTokenValue(ctx);
+		ctx.logger.info("token:", token);
+
+		if (!token) {
+			return ctx.helper.error({ ctx, errorType: "loginValidateFail" });
+		}
+
 		const { secret } = options;
 		ctx.logger.info("requestPath:", ctx.request.path);
 		// const isMatch = match.find((item) => ctx.request.path.includes(item)) || true;
@@ -31,12 +39,7 @@ export default (options: EggAppConfig["jwt"]) => {
 		// } else {
 
 		// }
-		// 从 header 获取对应的 token
-		const token = getTokenValue(ctx);
-		ctx.logger.info("token:", token);
-		if (!token) {
-			return ctx.helper.error({ ctx, errorType: "loginValidateFail" });
-		}
+
 		// 密钥必须存在
 		if (!secret) {
 			throw new Error("Secret not provided");

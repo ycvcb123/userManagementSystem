@@ -55,6 +55,8 @@ export default (appInfo: EggAppInfo) => {
 		},
 	};
 
+	config.middleware = ["customError"];
+
 	config.security = {
 		csrf: false,
 	};
