@@ -32,6 +32,7 @@ function initUserModel(app: Application) {
 			oauthID: { type: String },
 		},
 		{
+			// 自动添加 createdAt， updatedAt
 			timestamps: true,
 			// 做一个转化，删除一些不需要的返回的字段
 			toJSON: {
@@ -45,6 +46,7 @@ function initUserModel(app: Application) {
 
 	UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "users_id_counter" });
 
+	// 这里添加了一个范型 UserProps
 	return app.mongoose.model<UserProps>("User", UserSchema);
 }
 
