@@ -2,13 +2,13 @@ import { Context, EggAppConfig } from "egg";
 import { verify } from "jsonwebtoken";
 
 function getTokenValue(ctx: Context) {
-	const { authorizatiion } = ctx.header;
+	const { authorization } = ctx.header;
 	// 没有header或者authorization直接返回false
-	if (!ctx.header || !authorizatiion) {
+	if (!ctx.header || !authorization) {
 		return false;
 	}
-	if (typeof authorizatiion === "string") {
-		const parts = authorizatiion.trim().split(" ");
+	if (typeof authorization === "string") {
+		const parts = authorization.trim().split(" ");
 		if (parts.length === 2) {
 			const scheme = parts[0];
 			if (/^Bearer$/i.test(scheme)) {

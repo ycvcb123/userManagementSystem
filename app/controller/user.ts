@@ -4,7 +4,7 @@ import { sign } from "jsonwebtoken";
 
 // 验证规则
 const userCreateRules = {
-	username: "email",
+	username: "email", // 这里是 { type: "email"} 的简写
 	password: { type: "password", min: 8 },
 };
 
@@ -57,10 +57,11 @@ export const userErrorMessages = {
 
 export default class UserController extends Controller {
 	async createByEmail() {
-		const { ctx, service } = this;
+		// 注意ctx.request.body 和 ctx.body 的区别 一个是请求，一个用于返回
+		const { ctx, service, app } = this;
 
 		// ctx.validate(userCreateRules); // 1. 会直接获取request.body的结果
-		const errors = ctx.app.validator.validate(userCreateRules, ctx.request.body); // 2. 一般用这种验证
+		const errors = app.validator.validate(userCreateRules, ctx.request.body); // 2. 一般用这种验证
 		if (errors) {
 			ctx.logger.warn("createByEmail validate errors:", errors);
 			return ctx.helper.error({ ctx, errorType: "userValidateFail", error: errors }); // 不加return还会继续执行
@@ -99,6 +100,7 @@ export default class UserController extends Controller {
 			return ctx.helper.error({ ctx, errorType: "loginCheckFailInfo" });
 		}
 
+		// bcrypt 自行比较
 		const verifyPwd = await ctx.compare(password, user.password);
 
 		// 验证密码是否成功
@@ -109,16 +111,24 @@ export default class UserController extends Controller {
 		/**
 		 * 0. 正常的验证登录
 		 * */
-		// // 处理返回字段的过滤要在schema中配置
-		// // delete user.password; Docment 不是一个普通的对象不能直接删除
-		// // const userObj = user.toJSON();
-		// // delete userObj.password;
-
+		// delete user.password; const user: (UserProps & Document<any, any, UserProps>) | null; Docment 不是一个普通的对象不能直接删除
+		// 第一种方式（很麻烦）
+		// const userObj = user.toJSON(); 转成一个普通对象
+		// delete userObj.password;
+		// 第二种方式在model里处理（一劳永逸）
+		// 做一个转化，删除一些不需要的返回的字段
+		// toJSON: {
+		// 	transform(_doc, ret) {
+		// 		delete ret.password;
+		// 		delete ret.__v;
+		// 	},
+		// },
 		// ctx.helper.success({ ctx, res: user.toJSON(), msg: "登录成功" }); // 这里的toJSON加不加无所谓了
 
 		/**
 		 * 1. cookie的验证
 		 */
+		// ctx.cookies.set("username", user.username);
 		// ctx.cookies.set("username", user.username, { encrypt: true });
 		/**
 		 * 2. session的验证
@@ -163,7 +173,7 @@ export default class UserController extends Controller {
 		/**
 		 * 3. json web token 的验证
 		 * jwt Header 格式
-		 * Authorizatiion: Bearer tokenxxx
+		 * authorization: Bearer tokenxxx
 		 */
 		// const { ctx, app } = this;
 		// const token = this.getTokenValue();
@@ -189,13 +199,13 @@ export default class UserController extends Controller {
 	// 已经迁移至middleware
 	// getTokenValue() {
 	// 	const { ctx } = this;
-	// 	const { authorizatiion } = ctx.header;
+	// 	const { authorization } = ctx.header;
 	// 	// 没有header或者authorization直接返回false
-	// 	if (!ctx.header || !authorizatiion) {
+	// 	if (!ctx.header || !authorization) {
 	// 		return false;
 	// 	}
-	// 	if (typeof authorizatiion === "string") {
-	// 		const parts = authorizatiion.trim().split(" ");
+	// 	if (typeof authorization === "string") {
+	// 		const parts = authorization.trim().split(" ");
 	// 		if (parts.length === 2) {
 	// 			const scheme = parts[0];
 	// 			if (/^Bearer$/i.test(scheme)) {

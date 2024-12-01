@@ -1,7 +1,7 @@
 import { Application } from "egg";
 import { Schema } from "mongoose";
-// import * as AutoIncrementFactory from "mongoose-sequence"; // 给数据添加自增索引
-const AutoIncrementFactory = require("mongoose-sequence");
+// import * as AutoIncrementFactory from "mongoose-sequence";
+const AutoIncrementFactory = require("mongoose-sequence"); // 给数据添加自增索引
 
 export interface UserProps {
 	username: string;
@@ -39,7 +39,7 @@ function initUserModel(app: Application) {
 		}
 	);
 
-	UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "users_id_counter" });
+	UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "users_id_counter" }); // inc_field 自增的名称， id 特殊的id，避免和其它schema自增插件相混淆
 
 	return app.mongoose.model<UserProps>("User", UserSchema);
 }
