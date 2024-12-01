@@ -12,6 +12,7 @@ declare module "egg" {
 
 	// 定义bcrypt的声明
 	interface Context {
+		// bcrypt 方法定义
 		genHash(plainText: string): Promise<string>;
 		compare(plainText: string, hash: string): Promise<boolean>;
 	}
