@@ -65,8 +65,8 @@ export default class UserService extends Service {
 	async sendSMS({ phoneNumber = "", veriCode = "" }) {
 		const { app } = this;
 		const sendSMSRequest = new $Dysmsapi.SendSmsRequest({
-			signName: "阿里云短信测试",
-			templateCode: "SMS_154950909",
+			signName: "enginecli",
+			templateCode: "SMS_465715964",
 			phoneNumbers: phoneNumber,
 			templateParam: `{\"code\":\"${veriCode}\"}`,
 		});
