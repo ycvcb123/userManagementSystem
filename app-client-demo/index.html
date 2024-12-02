@@ -38,11 +38,10 @@
     window.onload = function() {
         window.addEventListener('message', m => {
            const token = m.data.token;
-           console.log(token)
+           if(!token) return;
             // 在这里使用 Axios 进行网络请求等操作
             axios.get('http://127.0.0.1:7001/api/users/userInfo', {
-    
-                headers: {Authorizatiion: `Bearer ${token}`}
+                headers: {Authorization: `Bearer ${token}`}
             })
                 .then(function(response) {
                     console.log(response.data);

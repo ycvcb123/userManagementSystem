@@ -16,7 +16,8 @@ export default (app: Application) => {
 	// user 路由
 	router.post("/api/users/create", controller.user.createByEmail);
 	router.get("/api/users/:id", jwt, controller.user.findById);
-	router.post("/api/users/loginByEmail", controller.user.loginByEmail);
+	// loginByEmail
+	router.post("/api/users/login", controller.user.loginByEmail);
 	router.post("/api/users/genVeriCode", controller.user.sendVeriCode);
 	router.post("/api/users/loginByCellphone", controller.user.loginByCellphone);
 
