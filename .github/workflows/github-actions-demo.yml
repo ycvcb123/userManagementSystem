@@ -9,6 +9,6 @@ jobs:
       - name: check out repo code
         uses: actions/checkout@v2
       - run: echo "the ${{github.repository}} has been cloned"
-      - name: List files in the repo 
+      - name: List files in the repo .
         run: |
           ls ${{ github.workspace }}
