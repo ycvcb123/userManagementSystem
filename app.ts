@@ -58,12 +58,12 @@ export default class AppBoot implements IBoot {
 	/**
 	 * 应用已经启动完毕 （didReady）异步
 	 */
-	// async didReady() {
-	// 	const ctx = await this.app.createAnonymousContext();
-	// 	const res = await ctx.service.test.sayHi("winson");
-	// 	console.log("did ready res", res);
-	// 	console.log("final middlewares", this.app.middleware);
-	// }
+	async didReady() {
+		// const ctx = await this.app.createAnonymousContext();
+		// const res = await ctx.service.test.sayHi("winson");
+		// console.log("did ready res", res);
+		console.log("final middlewares", this.app.middleware);
+	}
 
 	// /**
 	//  * http / https server 已启动 开始接受外部请求（serverDidReady）

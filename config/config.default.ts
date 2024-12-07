@@ -55,17 +55,16 @@ export default (appInfo: EggAppInfo) => {
 
 	config.mongoose = {
 		url: "mongodb://127.0.0.1:27017/userManagement",
-		options: {
-			useUnifiedTopology: true, // 添加 useUnifiedTopology 选项
-			// user: "root",
-			// pass: "123456",
-			// authSource: "admin",
-			// user: "winson",
-			// pass: "123456",
-		},
+		// options: {
+		// 	useUnifiedTopology: true, // 添加 useUnifiedTopology 选项
+		// 	user: "root",
+		// 	pass: "123456",
+		// 	authSource: "admin", // 说明用户来源级别（有的时候userManagement不一定有root这个用户，不加这个就连不上）
+		// },
 	};
 
-	// debugger
+	config.middleware = ["customError"];
+
 	config.security = {
 		csrf: false,
 		domainWhiteList: ["http://127.0.0.1:8080"],

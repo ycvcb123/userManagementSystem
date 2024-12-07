@@ -4,7 +4,7 @@ services:
     image: mongo
     container_name: user-mongo
     volumes: 
-      - '.docker-volumes/mongo/data:/data/db'
+      - '.docker-volumes/mongo/data:/data/db' # 能执行下面一条的前提是清空 .docker-volumes/mongo/data
       - '$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/'
     ports:
       - '27017:27017'
@@ -21,12 +21,13 @@ services:
       - .env
     # 没有提供密码的配置选项，所以用下面这种方式
     command: >
-      --requirepass ${REDIS_PASSWORD}
+      --requirepass ${REDIS_PASSWORD} 
     ports: 
       - 6379:6379
   user-system:
     depends_on:
       - user-mongo
+      - user-redis
     env_file: 
       - .env
     build: 

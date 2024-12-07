@@ -13,12 +13,13 @@ export default function checkPermission(modelName: string, errorType: GlobalErro
 			// @ts-ignore
 			const { ctx } = that;
 			const { id } = ctx.params;
-			const userId = ctx.state.user._id;
+			// const userId = ctx.state.user._id;
+			const userStateKeyVal = ctx.state.user[userKey];
 
-			const certianRecord = await ctx.model.User.findOne({ id });
+			const certianRecord = await ctx.model[modelName].findOne({ id });
 			console.log("certianRecord:::", certianRecord);
 
-			if (!certianRecord || certianRecord[userKey].toString() !== userId) {
+			if (!certianRecord || certianRecord[userKey].toString() !== userStateKeyVal) {
 				return ctx.helper.error({ ctx, errorType });
 			}
 

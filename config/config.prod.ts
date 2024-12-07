@@ -14,11 +14,11 @@ export default () => {
 	};
 
 	config.mongoose = {
-		url: "mongodb://user-mongo:27017/userManagement", // 换成网络名称
+		url: "mongodb://user-mongo:27017/userManagement", // 换成网络名称 docker创建的网络
 		options: {
 			useUnifiedTopology: true, // 添加 useUnifiedTopology 选项
-			user: process.env.MONGO_DB_USERNAME,
-			pass: process.env.MONGO_DB_PASSWORD,
+			user: "user", // process.env.MONGO_DB_USERNAME,
+			pass: "pass", // process.env.MONGO_DB_PASSWORD,
 		},
 	};
 
