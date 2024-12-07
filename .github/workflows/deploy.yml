@@ -36,3 +36,18 @@ jobs:
           key: ${{ secrets.KEY }}
           source: 'user-authentication'
           target: '~'
+      # 通过ssh登陆重启服务
+      - name: executing ssh and restart docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script_stop: true
+          script: | 
+           docker login --username=${{secrets.ACR_USERNAME}} --password=${{secrets.ACR_PASSWORD}} registry.cn-shenzhen.aliyuncs.com
+           cd ~/user-authentication/
+           docker-compose -f docker-compose-online.yml down
+           docker-compose -f docker-compose-online.yml up -d
+           rm -rf .env 
+           docker logout registry.cn-shenzhen.aliyuncs.com
