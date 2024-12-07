@@ -34,7 +34,7 @@ services:
     #   context: .
     #   dockerfile: Dockerfile
     # image: user-system
-    image: registry.cn-shenzhen.aliyuncs.com/winsonye/user-authentication:1.0.1
+    image: registry.cn-shenzhen.aliyuncs.com/winsonye/user-authentication:1.0.2
     container_name: user-system
     ports:
       - '7001:7001'
