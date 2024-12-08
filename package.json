@@ -1,6 +1,6 @@
 {
   "name": "hackernews-async-ts",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "hackernews showcase using typescript && egg",
   "private": true,
   "egg": {
