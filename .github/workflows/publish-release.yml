@@ -32,7 +32,7 @@ jobs:
         password: "${{ secrets.ACR_PASSWORD }}"
      # 使用阿里云 tag 进行 docker build
      - name: Build image for docker
-       run: docker build --tag `registry.cn-shenzhen.aliyuncs.com/winsonye/user-authentication:${{github.ref_name}}` .
+       run: docker build --tag registry.cn-shenzhen.aliyuncs.com/winsonye/user-authentication:${{github.ref_name}} .
      # 推送镜像到 ACR
      - name: Push image to ACR  
        run: docker push registry.cn-shenzhen.aliyuncs.com/winsonye/user-authentication:${{github.ref_name}}
