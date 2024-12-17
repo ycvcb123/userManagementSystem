@@ -1,5 +1,25 @@
 ## 用户认证系统说明文档
 
+> 说明：本项目属于纯服务端项目，测试时可以配合 Postman 工具使用，如下是所有相关接口：
+
+```js
+// email的方式创建用户信息
+router.post("/api/users/create", controller.user.createByEmail);
+// 获取用户信息
+router.get("/api/users/:id", jwt, controller.user.findById);
+// email的方式登录
+router.post("/api/users/login", controller.user.loginByEmail);
+// 获取手机登录验证码
+router.post("/api/users/genVeriCode", controller.user.sendVeriCode);
+// 手机号 + 验证码 登录
+router.post("/api/users/loginByCellphone", controller.user.loginByCellphone);
+// gitee outh2 授权
+router.get("/api/users/passport/gitee", controller.user.oauth);
+// gitee outh2 授权回调函数
+router.get("/api/users/gitee/oauth/callback", controller.user.oauthByGitee);
+// 获取用户信息
+router.get("/api/users/userInfo", jwt, controller.user.show);
+```
 
 ### 一、两种认证模型
 
@@ -212,7 +232,25 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 5. 根据拿到的用户信息，生成JWT，返回用户端。
 6. 后面的请求头里都会带上 JWT。（这里具体实现  <a style="text-decoration:none;" href="#Token-based">「 2. 基于 Token-based 的 JWT（json web token） 」</a>）这个部分
 
+### 附录:
 
+部署上线：
+
+1. 采用方式： github actions + docker-compose + aliyun ACR 镜像。
+
+2. 触发条件：git push --tags
+
+
+ * [GitHub Actions](https://docs.github.com/zh/actions )
+
+   <img src="md-images/image-16.png" alt="alt text" style="width:650px;">
+
+
+
+* [阿里云镜像服务](https://cr.console.aliyun.com/cn-shenzhen/instances)（使用个人版即可）
+  
+
+  
 
 
 
