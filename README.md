@@ -26,6 +26,8 @@
 8. 验证通过返回请求数据；否则返回未登录提示。
 
 
+<div id="Token-based"></div>
+
 ### 「 2. 基于 Token-based 的 JWT（json web token） 」
 
  <img src="md-images/image-1.png" alt="alt text" style="width:650px;">
@@ -93,8 +95,6 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 | session-based authentication       | 1. 服务器可以随时修改或删除会话信息，方便管理用户状态。</br>2.对于小型应用，session 的实现相对简单，使用常见的存储（如内存、数据库）即可。  | 1. 有硬件成本，占用服务器内存。（如上图session store 需要一个外部储存）</br>2.多进程或者多服务器时，同步是个问题。</br>3. 强依赖，服务挂了的话，会话功能完全无法使用。 |
 | JWT-based authentication                  | 1. 无状态的，服务器不需要记录任何信息，不占用内存。</br> 2. 多进程，多服务器集群没有影响，易于扩展。</br>3.和服务器端解耦，任何设备都可以生成token。 | 1.无法废弃，如果 JWT 被泄露，攻击者可以使用它进行伪造请求。虽然可以设置过期时间，但一旦签发就无法撤销。</br>2.JWT 通常比 Session ID 大，因为它携带了更多信息，可能导致网络传输开销增加。</br>3.实现和管理 JWT 可能比传统的 Session 更复杂，尤其是在处理签名和验证时。 |
 
-
-</br>
 </br>
 
 #### 综上，各有优缺点，自己按实际情况选择，本服务使用 jwt 的方式进行认证。
@@ -128,7 +128,7 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 
   [彩虹表](http://tool.geekapp.cn/decrypt.php) 了解一下:
 
-   通过生成大量的密码明文和对应的哈希值，并将它们存储在彩虹表 ，
+   生成大量的密码明文和对应的哈希值，并将它们存储在彩虹表，
    当需要破解一个哈希值对应的密码时，找到彩虹表中对应的哈希值，然后得出对应的明文。
 
     <img src="md-images/image-6.png" alt="alt text" style="width:650px;">
@@ -185,7 +185,6 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 
   <img src="md-images/image-12.png" alt="alt text" style="width:650px;">
 
-</br>
 
 * [gitlab Outh2 接入文档](https://gitlab.cn/docs/jh/api/oauth2.html)
 * [gitee Outh2 接入文档](https://gitee.com/api/v5/oauth_doc#/)
@@ -211,7 +210,7 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 3. 拿到授权码后，想gitlab服务再次发出请求，置换令牌。
 4. 成功拿到令牌后，就有了可以调用 gitlab api 的能力，调用获取gitlab用户信息。
 5. 根据拿到的用户信息，生成JWT，返回用户端。
-6. 后面的请求头里都会带上 JWT。（这里具体实现参照 「 2. 基于 Token-based 的 JWT（json web token） 」这个部分）
+6. 后面的请求头里都会带上 JWT。（这里具体实现  <a style="text-decoration:none;" href="#Token-based">「 2. 基于 Token-based 的 JWT（json web token） 」）</a>这个部分
 
 
 
