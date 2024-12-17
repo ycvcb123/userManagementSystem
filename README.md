@@ -5,6 +5,7 @@
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
 ![Docker Compose](https://img.shields.io/badge/Docker_Compose-Enabled-blue)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Active-brightgreen)
+![Aliyun](https://img.shields.io/badge/Aliyun-使用中-orange)
 
 
 > 说明：本项目属于纯服务端项目，测试时可以配合 Postman 工具使用，如下是所有相关接口：
@@ -121,8 +122,6 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 |--------------------|------|------|
 | session-based authentication       | 1. 服务器可以随时修改或删除会话信息，方便管理用户状态。</br>2.对于小型应用，session 的实现相对简单，使用常见的存储（如内存、数据库）即可。  | 1. 有硬件成本，占用服务器内存。（如上图session store 需要一个外部储存）</br>2.多进程或者多服务器时，同步是个问题。</br>3. 强依赖，服务挂了的话，会话功能完全无法使用。 |
 | JWT-based authentication                  | 1. 无状态的，服务器不需要记录任何信息，不占用内存。</br> 2. 多进程，多服务器集群没有影响，易于扩展。</br>3.和服务器端解耦，任何设备都可以生成token。 | 1.无法废弃，如果 JWT 被泄露，攻击者可以使用它进行伪造请求。虽然可以设置过期时间，但一旦签发就无法撤销。</br>2.JWT 通常比 Session ID 大，因为它携带了更多信息，可能导致网络传输开销增加。</br>3.实现和管理 JWT 可能比传统的 Session 更复杂，尤其是在处理签名和验证时。 |
-
-</br>
 
 #### 综上，各有优缺点，自己按实际情况选择，本服务使用 jwt 的方式进行认证。
 
@@ -256,8 +255,12 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 
 * [阿里云镜像服务](https://cr.console.aliyun.com/cn-shenzhen/instances)（使用个人版即可）
   
-
+* [阿里云短信服务接入](https://dysms.console.aliyun.com/quickstart)
   
+* [阿里云短信服务调试](https://api.aliyun.com/api/Dysmsapi/2017-05-25/SendSms?spm=api-workbench.API%20Document.0.0.747049a51PQRsp&RegionId=cn-shenzhen&tab=DEMO&lang=TYPESCRIPT)
+
+
+
 
 
 
