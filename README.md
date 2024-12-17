@@ -210,7 +210,7 @@ ctx.set({ "Access-Control-Expose-Headers": "authorization" });
 3. 拿到授权码后，想gitlab服务再次发出请求，置换令牌。
 4. 成功拿到令牌后，就有了可以调用 gitlab api 的能力，调用获取gitlab用户信息。
 5. 根据拿到的用户信息，生成JWT，返回用户端。
-6. 后面的请求头里都会带上 JWT。（这里具体实现  <a style="text-decoration:none;" href="#Token-based">「 2. 基于 Token-based 的 JWT（json web token） 」）</a>这个部分
+6. 后面的请求头里都会带上 JWT。（这里具体实现  <a style="text-decoration:none;" href="#Token-based">「 2. 基于 Token-based 的 JWT（json web token） 」</a>）这个部分
 
 
 
