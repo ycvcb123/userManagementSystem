@@ -1,4 +1,11 @@
 ## 用户认证系统说明文档
+![Egg v3.11.0 Badge](https://img.shields.io/badge/Egg-v3.11.0-brightgreen)
+![TypeScript Support](https://img.shields.io/badge/TypeScript-Supported-blue)
+![JWT](https://img.shields.io/badge/JWT-Implemented-brightgreen)
+![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
+![Docker Compose](https://img.shields.io/badge/Docker_Compose-Enabled-blue)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Active-brightgreen)
+
 
 > 说明：本项目属于纯服务端项目，测试时可以配合 Postman 工具使用，如下是所有相关接口：
 
