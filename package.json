@@ -1,6 +1,6 @@
 {
   "name": "hackernews-async-ts",
-  "version": "1.0.10",
+  "version": "3.0.2",
   "description": "hackernews showcase using typescript && egg",
   "private": true,
   "egg": {
@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "egg-scripts start --daemon --title=demo-egg",
-    "dev": "egg-bin dev --port 7001",
     "stop": "egg-scripts stop --title=demo-egg",
+    "dev": "egg-bin dev --port 7001",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
     "test": "npm run lint -- --fix && npm run test-local",

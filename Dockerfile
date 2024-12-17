@@ -3,7 +3,12 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY package.json package-lock.json /usr/src/app/
+<<<<<<< HEAD
 RUN npm install
+=======
+#--registry=https://registry.npmmirror.com/
+RUN npm install 
+>>>>>>> user-management-system-gitactions
 
 COPY . /usr/src/app/
 RUN npm run tsc 

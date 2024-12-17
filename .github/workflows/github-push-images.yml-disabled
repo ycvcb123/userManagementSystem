@@ -1,0 +1,27 @@
+name: build images, push to acr
+on: [push]
+jobs:
+  build-and-push-acr:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: check out repo code
+        uses: actions/checkout@v2
+      - name: create env files
+        run: touch .env
+      # > 代表重写，>> 代表继续添加
+      - run: echo ALC_ACCESS_KEY=${{secrets.ALC_ACCESS_KEY}} >> .env
+      - run: echo ALC_ACCESS_SECRET=${{secrets.ALC_ACCESS_SECRET}} >> .env  
+      # 登陆到阿里云的acr
+      - name: Login to Aliyun Container Registry (ACR)
+        uses: aliyun/acr-login@v1
+        with:
+          login-server: https://registry.cn-shenzhen.aliyuncs.com
+          region-id: cn-shenzhen
+          username: "${{ secrets.ACR_USERNAME }}"
+          password: "${{ secrets.ACR_PASSWORD }}"
+      # 使用阿里云 tag 进行 docker build
+      - name: Build image for docker
+        run: docker build --tag "registry.cn-shenzhen.aliyuncs.com/winsonye/user-authentication:1.0.2" .
+      # 推送镜像到 ACR
+      - name: Push image to ACR  
+        run: docker push registry.cn-shenzhen.aliyuncs.com/winsonye/user-authentication:1.0.2
