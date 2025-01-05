@@ -63,7 +63,7 @@ export default (appInfo: EggAppInfo) => {
 		// },
 	};
 
-	config.middleware = ["customError"];
+	config.middleware = ["jwt", "customError"];
 
 	config.security = {
 		csrf: false,
@@ -89,6 +89,29 @@ export default (appInfo: EggAppInfo) => {
 		},
 	};
 
+	config.oss = {
+		client: {
+			accessKeyId: process.env.accessKeyId || "",
+			accessKeySecret: process.env.accessKeySecret || "",
+			bucket: "w-low-code",
+			endpoint: "oss-cn-shenzhen.aliyuncs.com",
+		},
+	};
+
+	config.multipart = {
+		// mode: "file",
+		// tmpdir: path.join(appInfo.baseDir, "uploads"),
+		whitelist: [".png", ".jpg", ".gif", ".webp"],
+		fileSize: "1mb",
+	};
+
+	// config.static = {
+	// 	dir: [
+	// 		{ prefix: "/public", dir: path.join(appInfo.baseDir, "app/public") },
+	// 		{ prefix: "/uploads", dir: path.join(appInfo.baseDir, "uploads") },
+	// 	],
+	// };
+
 	// config.jwt = {
 	// 	secret: "5674373",
 	// 	expires: "2h",
@@ -100,6 +123,7 @@ export default (appInfo: EggAppInfo) => {
 		jwt: {
 			secret: "5674373",
 			expires: "2h",
+			match: ["/api/works", "/api/utils", "/api/users/userInfo"],
 		},
 		// 阿里云短信服务接入配置
 		aliCloudConfig: {

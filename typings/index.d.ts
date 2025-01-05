@@ -1,5 +1,7 @@
 import "egg";
 import { Connection, Model } from "mongoose";
+import * as OSS from "ali-oss";
+import { Options } from "ali-oss";
 // import { UserProps } from "../app/model/user";
 declare module "egg" {
 	//  这种每次都得手动添加，太费事
@@ -15,6 +17,7 @@ declare module "egg" {
 		// bcrypt 方法定义
 		genHash(plainText: string): Promise<string>;
 		compare(plainText: string, hash: string): Promise<boolean>;
+		oss: OSS;
 	}
 	interface EggAppConfig {
 		bcrypt: {
@@ -34,6 +37,9 @@ declare module "egg" {
 			redirectURL: string;
 			authURL: string;
 			giteeUserApi: string;
+		};
+		oss: {
+			client: Options;
 		};
 	}
 

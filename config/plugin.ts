@@ -23,6 +23,10 @@ export default {
 		enable: true,
 		package: "egg-cors",
 	},
+	oss: {
+		enable: true,
+		package: "egg-oss",
+	},
 	// jwt: {
 	// 	enable: true,
 	// 	package: "egg-jwt",
