@@ -108,6 +108,7 @@ export default (appInfo: EggAppInfo) => {
 			endpoint: `dysmsapi.aliyuncs.com`,
 		},
 		giteeOauthConfig,
+		H5BaseURL: "http://127.0.0.1:7001/api/pages",
 	};
 
 	return {

@@ -27,4 +27,13 @@ export default (app: Application) => {
 	router.get("/api/users/gitee/oauth/callback", controller.user.oauthByGitee);
 
 	router.get("/api/users/userInfo", jwt, controller.user.show);
+
+	// works
+	router.post("/api/works", jwt, controller.work.createWork);
+	router.get("/api/works", jwt, controller.work.myList);
+	router.get("/api/templates", controller.work.templateList);
+	router.patch("/api/works/:id", jwt, controller.work.update);
+	router.delete("/api/works/:id", jwt, controller.work.delete);
+	router.post("/api/works/publish/:id", jwt, controller.work.publishWork);
+	router.post("/api/works/publish-template/:id", jwt, controller.work.publishTemplate);
 };
