@@ -7,6 +7,45 @@ import Busboy from "busboy";
 import { FileStream } from "../../typings/app";
 
 export default class UtilsController extends Controller {
+	splitIdAndUuid(str = "") {
+		const result = {} as { id: number; uuid: string };
+		if (!str) return result;
+		const firstDashIndex = str.indexOf("-");
+		if (firstDashIndex < 0) return result;
+		result.id = Number(str.slice(0, firstDashIndex));
+		result.uuid = str.slice(firstDashIndex + 1);
+		return result;
+	}
+
+	async renderH5Page() {
+		const { ctx } = this;
+		const { idAndUuid } = ctx.params;
+		const query = this.splitIdAndUuid(idAndUuid);
+
+		try {
+			const pageData = await this.service.utils.renderToPageData(query);
+			await ctx.render("page.tpl", pageData);
+		} catch (e) {
+			ctx.helper.error({ ctx, errorType: "h5WorkNotExistError" });
+		}
+
+		// const { ctx } = this;
+		// const vueApp = createSSRApp({
+		// 	data: () => ({
+		// 		msg: "hello world",
+		// 	}),
+		// 	template: "<h1>{{msg}}</h1>",
+		// });
+
+		// // const appContent = await renderToString(vueApp);
+		// // ctx.response.type = "text/html";
+		// // ctx.body = appContent;
+
+		// const appStream = await renderToNodeStream(vueApp);
+		// ctx.status = 200;
+		// await pipeline(appStream, ctx.res);
+	}
+
 	async uploadToOSS() {
 		const { ctx } = this;
 		const stream = await ctx.getFileStream();
@@ -21,6 +60,7 @@ export default class UtilsController extends Controller {
 		}
 	}
 
+	// 这个就是个BusBoy的例子，我们真实用的egg-multipart底层就是基于busboy的变种co-busboy
 	uploadFileUseBusBoy() {
 		const { ctx, app } = this;
 		return new Promise<string[]>((resolve) => {

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{ title }}</title>
+	<meta name="description" content="{{ desc }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/minireset.css/0.0.2/minireset.min.css" />
+</head>
+<body style="{{ bodyStyle }}">
+	<!-- safe 确保不会被转译 -->
+	{{ html | safe}}
+</body>
+</html>

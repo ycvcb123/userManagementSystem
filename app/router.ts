@@ -42,4 +42,7 @@ export default (app: Application) => {
 	// router.post("/api/utils/upload", controller.utils.uploadToOSS);
 	router.post("/api/utils/upload", controller.utils.testBusBoy);
 	router.post("/api/utils/upload-img", controller.utils.uploadMutipleFiles);
+
+	// render
+	router.get("/api/pages/:idAndUuid", controller.utils.renderH5Page);
 };

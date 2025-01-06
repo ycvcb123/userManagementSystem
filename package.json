@@ -19,7 +19,10 @@
     "lint": "eslint .",
     "clean": "tsc -b --clean",
     "ets": "ets",
-    "release": "release-it"
+    "release": "release-it",
+    "build:template:dev": "npx webpack --config webpack/webpack.config.js",
+    "build:template:prod": "npx webpack --config webpack/webpack.config.js --env production && npm run upload",
+    "upload": "node webpack/uploadToOSS.js"
   },
   "dependencies": {
     "@alicloud/dysmsapi20170525": "^2.0.2",
@@ -40,9 +43,11 @@
     "egg-validate": "^2.0.2",
     "egg-view-nunjucks": "^2.3.0",
     "jsonwebtoken": "^8.5.1",
+    "lego-components": "^0.1.7",
     "moment": "^2.22.0",
     "mongoose-sequence": "^5.3.1",
-    "stream-wormhole": "^1.1.0"
+    "stream-wormhole": "^1.1.0",
+    "vue": "^3.2.22"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "^1.1.0",
@@ -51,12 +56,19 @@
     "@types/cheerio": "^0.22.1",
     "@types/mocha": "^10.0.1",
     "cheerio": "^1.0.0-rc.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.5.1",
     "egg-bin": "^5.9.0",
     "egg-mock": "^5.5.0",
     "eslint": "^8.31.0",
     "eslint-config-egg": "^12.1.0",
+    "filemanager-webpack-plugin": "^6.1.7",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.4.5",
     "release-it": "^16.3.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
   },
   "engines": {
     "node": ">=16.0.0"
