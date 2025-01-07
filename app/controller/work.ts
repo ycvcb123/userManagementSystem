@@ -3,9 +3,15 @@ import { Controller } from "egg";
 // import { sign } from "jsonwebtoken";
 import inputValidate from "../../decorator/inputValidate";
 import checkPermission from "../../decorator/checkPermission";
+import { nanoid } from "nanoid";
 
 const workCreateRules = {
 	title: "string",
+};
+
+const channelCreateRules = {
+	name: "string",
+	workId: "number",
 };
 
 export interface IndexCondition {
@@ -25,8 +31,75 @@ export const workErrorMessages = {
 };
 
 export default class WorkController extends Controller {
+	// 创建渠道
+	@inputValidate(channelCreateRules, "channelValidateFail")
+	@checkPermission({ casl: "Channel", mongoose: "Work" }, "workNoPermissonFail", {
+		value: { type: "body", valueKey: "workId" },
+	})
+	async createChannel() {
+		const { ctx } = this;
+		const { name, workId } = ctx.request.body;
+		const newChannel = {
+			name,
+			id: nanoid(6),
+		};
+		const res = await ctx.model.Work.findOneAndUpdate({ id: workId }, { $push: { channels: newChannel } });
+		if (res) {
+			ctx.helper.success({ ctx, res: newChannel });
+		} else {
+			ctx.helper.error({ ctx, errorType: "channelOperateFail" });
+		}
+	}
+
+	// 获取作品频道
+	@checkPermission({ casl: "Channel", mongoose: "Work" }, "workNoPermissonFail")
+	async getWorkChannel() {
+		const { ctx } = this;
+		const { id } = ctx.params;
+		const certianWork = await ctx.model.Work.findOne({ id });
+		if (certianWork) {
+			const { channels } = certianWork;
+			ctx.helper.success({ ctx, res: { count: (channels && channels.length) || 0, list: channels || [] } });
+		} else {
+			ctx.helper.error({ ctx, errorType: "channelOperateFail" });
+		}
+	}
+
+	// 更新频道名称
+	@checkPermission({ casl: "Channel", mongoose: "Work" }, "workNoPermissonFail", { key: "channels.id" })
+	async updateChannelName() {
+		const { ctx } = this;
+		const { id } = ctx.params;
+		const { name } = ctx.request.body;
+		const res = await ctx.model.Work.findOneAndUpdate({ "channels.id": id }, { $set: { "channels.$.name": name } });
+		if (res) {
+			ctx.helper.success({ ctx, res: { name } });
+		} else {
+			ctx.helper.error({ ctx, errorType: "channelOperateFail" });
+		}
+	}
+
+	// 删除频道
+	@checkPermission({ casl: "Channel", mongoose: "Work" }, "workNoPermissonFail", { key: "channels.id" })
+	@checkPermission({ casl: "Channel", mongoose: "Work" }, "workNoPermissonFail")
+	async deleteChannel() {
+		const { ctx } = this;
+		const { id } = ctx.params;
+		const work = await ctx.model.Work.findOneAndUpdate(
+			{ "channels.id": id },
+			{ $pull: { channels: { id } } }, // 删除channels中id符合的选项
+			{ new: true } // 返回更新前的数据还是更新后的数据
+		);
+		if (work) {
+			ctx.helper.success({ ctx, res: work });
+		} else {
+			ctx.helper.error({ ctx, errorType: "channelOperateFail" });
+		}
+	}
+
 	// 创建作品
 	@inputValidate(workCreateRules, "workValidateFail")
+	@checkPermission("Work", "workNoPermissonFail")
 	async createWork() {
 		const { ctx, service } = this;
 		const workData = await service.work.createEmptyWork(ctx.request.body);
@@ -34,7 +107,6 @@ export default class WorkController extends Controller {
 	}
 
 	// 作品列表
-	@checkPermission("User", "workNoPermissonFail")
 	async myList() {
 		const { ctx } = this;
 		const { pageIndex, pageSize, isTemplate, title } = ctx.query;
@@ -84,7 +156,7 @@ export default class WorkController extends Controller {
 	// 	return certWork.user.toString() === userId;
 	// }
 
-	@checkPermission("User", "workNoPermissonFail")
+	@checkPermission("Work", "workNoPermissonFail")
 	async update() {
 		const { ctx } = this;
 		const { id } = ctx.params;
@@ -99,7 +171,7 @@ export default class WorkController extends Controller {
 		ctx.helper.success({ ctx, res });
 	}
 
-	@checkPermission("User", "workNoPermissonFail")
+	@checkPermission("Work", "workNoPermissonFail")
 	async delete() {
 		const { ctx } = this;
 		const { id } = ctx.params;
@@ -113,11 +185,19 @@ export default class WorkController extends Controller {
 		ctx.helper.success({ ctx, res });
 	}
 
-	@checkPermission("User", "workNoPermissonFail")
+	@checkPermission("Work", "workNoPermissonFail", { action: "publish" })
 	async publish(isTemplate: boolean) {
 		const { ctx } = this;
 		const url = await this.service.work.publish(ctx.params.id, isTemplate);
 		ctx.helper.success({ ctx, res: { url } });
+	}
+
+	@checkPermission("Work", "workNoPermissonFail")
+	async myWork() {
+		const { ctx } = this;
+		const { id } = ctx.params;
+		const res = await this.ctx.model.Work.findOne({ id }).lean();
+		ctx.helper.success({ ctx, res });
 	}
 
 	async publishWork() {

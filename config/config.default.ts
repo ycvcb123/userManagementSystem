@@ -1,5 +1,5 @@
 import { EggAppConfig, PowerPartial, EggAppInfo } from "egg";
-import * as fs from "fs";
+// import * as fs from "fs";
 import * as path from "path";
 import * as dotenv from "dotenv";
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
@@ -49,9 +49,9 @@ export default (appInfo: EggAppInfo) => {
 		},
 	};
 
-	config.siteFile = {
-		"/favicon.ico": fs.readFileSync(path.join(appInfo.baseDir, "app/public/favicon.png")),
-	};
+	// config.siteFile = {
+	// 	"/favicon.ico": fs.readFileSync(path.join(appInfo.baseDir, "app/public/favicon.png")),
+	// };
 
 	config.mongoose = {
 		url: "mongodb://127.0.0.1:27017/userManagement",
@@ -123,7 +123,7 @@ export default (appInfo: EggAppInfo) => {
 		jwt: {
 			secret: "5674373",
 			expires: "2h",
-			match: ["/api/works", "/api/utils", "/api/users/userInfo"],
+			match: ["/api/works", "/api/utils", "/api/users/userInfo", "/api/channel"],
 		},
 		// 阿里云短信服务接入配置
 		aliCloudConfig: {

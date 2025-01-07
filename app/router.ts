@@ -33,6 +33,7 @@ export default (app: Application) => {
 
 	router.post("/api/works", controller.work.createWork);
 	router.get("/api/works", controller.work.myList);
+	router.get("/api/works/:id", controller.work.myWork);
 	router.patch("/api/works/:id", controller.work.update);
 	router.delete("/api/works/:id", controller.work.delete);
 	router.post("/api/works/publish/:id", controller.work.publishWork);
@@ -45,4 +46,10 @@ export default (app: Application) => {
 
 	// render
 	router.get("/api/pages/:idAndUuid", controller.utils.renderH5Page);
+
+	// channel
+	router.post("/api/channel", controller.work.createChannel);
+	router.get("/api/channel/getWorkChannels/:id", controller.work.getWorkChannel);
+	router.patch("/api/channel/updateName/:id", controller.work.updateChannelName);
+	router.delete("/api/channel/:id", controller.work.deleteChannel);
 };

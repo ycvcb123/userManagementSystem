@@ -2,7 +2,6 @@ import { Controller } from "egg";
 // verify
 import { sign } from "jsonwebtoken";
 import inputValidate from "../../decorator/inputValidate";
-import checkPermission from "../../decorator/checkPermission";
 
 // 验证规则
 const userCreateRules = {
@@ -171,55 +170,55 @@ export default class UserController extends Controller {
 		ctx.helper.success({ ctx, res: { token }, msg: "登录成功" });
 	}
 
-	@checkPermission("User", "workNoPermissonFail", "_id")
-	async findById() {
-		/**
-		 * 0. 正常根据user的id进行查找
-		 * */
-		// const { ctx, service } = this;
-		// // /user/:id
-		// const userData = await service.user.findById(ctx.params.id);
-		// ctx.helper.success({ ctx, res: userData });
-		/**
-		 * 1. cookie 的验证
-		 * */
-		// const { ctx } = this;
-		// const userData = ctx.cookies.get("username"); // { encrypt: true }
-		// ctx.helper.success({ ctx, res: userData });
-		/**
-		 * 2. session的验证
-		 */
-		// const { ctx } = this;
-		// const userData = ctx.session.username; // { encrypt: true }
-		// if (!userData) {
-		// 	return ctx.helper.error({ ctx, errorType: "loginValidateFail" });
-		// }
-		// ctx.helper.success({ ctx, res: userData });
-		/**
-		 * 3. json web token 的验证
-		 * jwt Header 格式
-		 * authorization: Bearer tokenxxx
-		 */
-		// const { ctx, app } = this;
-		// const token = this.getTokenValue();
-		// if (!token) {
-		// 	return ctx.helper.error({ ctx, errorType: "loginValidateFail" });
-		// }
-		// try {
-		// 	const decoded = verify(token, app.config.jwt.secret);
-		// 	ctx.helper.success({ ctx, res: decoded });
-		// } catch (err) {
-		// 	return ctx.helper.error({ ctx, errorType: "loginValidateFail", error: err });
-		// }
+	// @checkPermission("User", "workNoPermissonFail")
+	// async findById() {
+	// 	/**
+	// 	 * 0. 正常根据user的id进行查找
+	// 	 * */
+	// 	// const { ctx, service } = this;
+	// 	// // /user/:id
+	// 	// const userData = await service.user.findById(ctx.params.id);
+	// 	// ctx.helper.success({ ctx, res: userData });
+	// 	/**
+	// 	 * 1. cookie 的验证
+	// 	 * */
+	// 	// const { ctx } = this;
+	// 	// const userData = ctx.cookies.get("username"); // { encrypt: true }
+	// 	// ctx.helper.success({ ctx, res: userData });
+	// 	/**
+	// 	 * 2. session的验证
+	// 	 */
+	// 	// const { ctx } = this;
+	// 	// const userData = ctx.session.username; // { encrypt: true }
+	// 	// if (!userData) {
+	// 	// 	return ctx.helper.error({ ctx, errorType: "loginValidateFail" });
+	// 	// }
+	// 	// ctx.helper.success({ ctx, res: userData });
+	// 	/**
+	// 	 * 3. json web token 的验证
+	// 	 * jwt Header 格式
+	// 	 * authorization: Bearer tokenxxx
+	// 	 */
+	// 	// const { ctx, app } = this;
+	// 	// const token = this.getTokenValue();
+	// 	// if (!token) {
+	// 	// 	return ctx.helper.error({ ctx, errorType: "loginValidateFail" });
+	// 	// }
+	// 	// try {
+	// 	// 	const decoded = verify(token, app.config.jwt.secret);
+	// 	// 	ctx.helper.success({ ctx, res: decoded });
+	// 	// } catch (err) {
+	// 	// 	return ctx.helper.error({ ctx, errorType: "loginValidateFail", error: err });
+	// 	// }
 
-		/**
-		 * 4. 使用中间件直接取值
-		 * */
-		const { ctx } = this;
-		ctx.logger.info("ctx.state.user:", ctx.state.user);
-		const userData = await ctx.service.user.findByUsername(ctx.state.user.username);
-		ctx.helper.success({ ctx, res: userData });
-	}
+	// 	/**
+	// 	 * 4. 使用中间件直接取值
+	// 	 * */
+	// 	const { ctx } = this;
+	// 	ctx.logger.info("ctx.state.user:", ctx.state.user);
+	// 	const userData = await ctx.service.user.findByUsername(ctx.state.user.username);
+	// 	ctx.helper.success({ ctx, res: userData });
+	// }
 
 	async show() {
 		const { ctx } = this;

@@ -27,6 +27,7 @@
   "dependencies": {
     "@alicloud/dysmsapi20170525": "^2.0.2",
     "@alicloud/openapi-client": "^0.3.5",
+    "@casl/ability": "^5.4.3",
     "@types/jsonwebtoken": "^8.5.5",
     "axios": "^1.6.0",
     "busboy": "^0.3.1",
