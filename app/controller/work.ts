@@ -81,7 +81,6 @@ export default class WorkController extends Controller {
 
 	// 删除频道
 	@checkPermission({ casl: "Channel", mongoose: "Work" }, "workNoPermissonFail", { key: "channels.id" })
-	@checkPermission({ casl: "Channel", mongoose: "Work" }, "workNoPermissonFail")
 	async deleteChannel() {
 		const { ctx } = this;
 		const { id } = ctx.params;

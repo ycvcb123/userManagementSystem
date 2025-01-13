@@ -53,6 +53,6 @@ export default class WorkService extends Service {
 			...(isTemplate && { isTemplate: true }),
 		};
 		const res = await ctx.model.Work.findOneAndUpdate({ id }, payload, { new: true });
-		return `${H5BaseURL}/p/${id}-${res?.uuid}`;
+		return `${H5BaseURL}/api/pages/${id}-${res?.uuid}`;
 	}
 }

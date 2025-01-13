@@ -63,11 +63,15 @@ export default (appInfo: EggAppInfo) => {
 		// },
 	};
 
-	config.middleware = ["jwt", "customError"];
+	config.middleware = ["xframe", "jwt", "customError"];
 
 	config.security = {
 		csrf: false,
 		domainWhiteList: ["http://127.0.0.1:8080"],
+		xframe: {
+			enable: true,
+			value: "ALLOW-FROM",
+		},
 	};
 
 	// 这里只能陪一个，多个实现比较麻烦，直接换到security一样的
